@@ -1,6 +1,7 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
-], (Controller) => {
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/core/routing/History"
+], (Controller, History) => {
     "use strict";
 
     return Controller.extend("bagemini.controller.Object", {
@@ -12,9 +13,22 @@ sap.ui.define([
         _onObjectMatched: function (oEvent) {
             var sInvoiceId = oEvent.getParameter("arguments").InvoiceId;
             this.getView().bindElement({
-                path: "/Invoices('" + sInvoiceId + "')",
-                model: ""
+                path: "/Invoices('" + sInvoiceId + "')"
             });
+        },
+
+        onNavBack: function () {
+            var oHistory = History.getInstance();
+            var sPreviousHash = oHistory.getPreviousHash();
+
+            // Falls wir aus der App navigiert sind -> einen Schritt zurück
+            if (sPreviousHash !== undefined) {
+                window.history.go(-1);
+            } else {
+                // Fallback: Manuell zur Listenansicht navigieren, wenn App direkt über Bookmark aufgerufen wurde
+                var oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("RouteView1", {}, true);
+            }
         }
     });
 });
