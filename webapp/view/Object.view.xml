@@ -1,0 +1,22 @@
+<mvc:View
+    controllerName="bagemini.controller.Object"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    displayBlock="true">
+    <f:DynamicPage id="objectPageId" toggleHeaderOnTitleClick="true" showFooter="true">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{i18n>objectTitle}"/>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:content>
+            <!-- Vorerst leer gemäß Anforderung -->
+            <VBox class="sapUiSmallMargin">
+                <Text text="Hier entstehen die Rechnungsdetails..." />
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

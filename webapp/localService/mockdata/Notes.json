@@ -1,0 +1,14 @@
+[
+  {
+    "InvoiceId": "INV-003",
+    "NoteText": "Note for invoice INV-003"
+  },
+  {
+    "InvoiceId": "INV-006",
+    "NoteText": "Note for invoice INV-006"
+  },
+  {
+    "InvoiceId": "INV-009",
+    "NoteText": "Note for invoice INV-009"
+  }
+]

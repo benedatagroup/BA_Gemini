@@ -1,0 +1,112 @@
+[
+  {
+    "InvoiceId": "INV-001",
+    "InvoiceNumber": "RE-20230001",
+    "VendorName": "Vendor 1",
+    "InvoiceDate": "/Date(1675209600000)/",
+    "DueDate": "/Date(1677628800000)/",
+    "NetAmount": "1296.67",
+    "GrossAmount": "1543.04",
+    "Currency": "EUR",
+    "Status": "Draft"
+  },
+  {
+    "InvoiceId": "INV-002",
+    "InvoiceNumber": "RE-20230002",
+    "VendorName": "Vendor 2",
+    "InvoiceDate": "/Date(1675296000000)/",
+    "DueDate": "/Date(1677715200000)/",
+    "NetAmount": "390.34",
+    "GrossAmount": "464.50",
+    "Currency": "EUR",
+    "Status": "Posted"
+  },
+  {
+    "InvoiceId": "INV-003",
+    "InvoiceNumber": "RE-20230003",
+    "VendorName": "Vendor 3",
+    "InvoiceDate": "/Date(1675382400000)/",
+    "DueDate": "/Date(1677801600000)/",
+    "NetAmount": "1590.66",
+    "GrossAmount": "1892.89",
+    "Currency": "EUR",
+    "Status": "Draft"
+  },
+  {
+    "InvoiceId": "INV-004",
+    "InvoiceNumber": "RE-20230004",
+    "VendorName": "Vendor 4",
+    "InvoiceDate": "/Date(1675468800000)/",
+    "DueDate": "/Date(1677888000000)/",
+    "NetAmount": "614.09",
+    "GrossAmount": "730.77",
+    "Currency": "EUR",
+    "Status": "Posted"
+  },
+  {
+    "InvoiceId": "INV-005",
+    "InvoiceNumber": "RE-20230005",
+    "VendorName": "Vendor 5",
+    "InvoiceDate": "/Date(1675555200000)/",
+    "DueDate": "/Date(1677974400000)/",
+    "NetAmount": "432.31",
+    "GrossAmount": "514.45",
+    "Currency": "EUR",
+    "Status": "Draft"
+  },
+  {
+    "InvoiceId": "INV-006",
+    "InvoiceNumber": "RE-20230006",
+    "VendorName": "Vendor 6",
+    "InvoiceDate": "/Date(1675641600000)/",
+    "DueDate": "/Date(1678060800000)/",
+    "NetAmount": "72.81",
+    "GrossAmount": "86.64",
+    "Currency": "EUR",
+    "Status": "Posted"
+  },
+  {
+    "InvoiceId": "INV-007",
+    "InvoiceNumber": "RE-20230007",
+    "VendorName": "Vendor 7",
+    "InvoiceDate": "/Date(1675728000000)/",
+    "DueDate": "/Date(1678147200000)/",
+    "NetAmount": "450.70",
+    "GrossAmount": "536.33",
+    "Currency": "EUR",
+    "Status": "Draft"
+  },
+  {
+    "InvoiceId": "INV-008",
+    "InvoiceNumber": "RE-20230008",
+    "VendorName": "Vendor 8",
+    "InvoiceDate": "/Date(1675814400000)/",
+    "DueDate": "/Date(1678233600000)/",
+    "NetAmount": "1043.67",
+    "GrossAmount": "1241.97",
+    "Currency": "EUR",
+    "Status": "Posted"
+  },
+  {
+    "InvoiceId": "INV-009",
+    "InvoiceNumber": "RE-20230009",
+    "VendorName": "Vendor 9",
+    "InvoiceDate": "/Date(1675900800000)/",
+    "DueDate": "/Date(1678320000000)/",
+    "NetAmount": "654.15",
+    "GrossAmount": "778.44",
+    "Currency": "EUR",
+    "Status": "Draft"
+  },
+  {
+    "InvoiceId": "INV-010",
+    "InvoiceNumber": "RE-20230010",
+    "VendorName": "Vendor 10",
+    "InvoiceDate": "/Date(1675987200000)/",
+    "DueDate": "/Date(1678406400000)/",
+    "NetAmount": "61.58",
+    "GrossAmount": "73.28",
+    "Currency": "EUR",
+    "Status": "Posted"
+  }
+]

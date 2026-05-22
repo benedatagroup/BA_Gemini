@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="com.bagemini.invoice" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Invoice">
+                <Key>
+                    <PropertyRef Name="InvoiceId" />
+                </Key>
+                <Property Name="InvoiceId" Type="Edm.String" Nullable="false" MaxLength="20" />
+                <Property Name="InvoiceNumber" Type="Edm.String" MaxLength="50" />
+                <Property Name="VendorName" Type="Edm.String" MaxLength="100" />
+                <Property Name="InvoiceDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" />
+                <Property Name="DueDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" />
+                <Property Name="NetAmount" Type="Edm.Decimal" Precision="15" Scale="2" />
+                <Property Name="GrossAmount" Type="Edm.Decimal" Precision="15" Scale="2" />
+                <Property Name="Currency" Type="Edm.String" MaxLength="5" />
+                <Property Name="Status" Type="Edm.String" MaxLength="20" />
+                <NavigationProperty Name="InvoiceItems" Relationship="com.bagemini.invoice.Invoice_InvoiceItems" FromRole="FromRole_Invoice" ToRole="ToRole_InvoiceItem" />
+                <NavigationProperty Name="TaxItems" Relationship="com.bagemini.invoice.Invoice_TaxItems" FromRole="FromRole_Invoice" ToRole="ToRole_TaxItem" />
+                <NavigationProperty Name="Notes" Relationship="com.bagemini.invoice.Invoice_Notes" FromRole="FromRole_Invoice" ToRole="ToRole_Note" />
+                <NavigationProperty Name="Attachments" Relationship="com.bagemini.invoice.Invoice_Attachments" FromRole="FromRole_Invoice" ToRole="ToRole_Attachment" />
+            </EntityType>
+            <EntityType Name="InvoiceItem">
+                <Key>
+                    <PropertyRef Name="ItemId" />
+                    <PropertyRef Name="InvoiceId" />
+                </Key>
+                <Property Name="ItemId" Type="Edm.String" Nullable="false" MaxLength="20" />
+                <Property Name="InvoiceId" Type="Edm.String" Nullable="false" MaxLength="20" />
+                <Property Name="Description" Type="Edm.String" MaxLength="255" />
+                <Property Name="Quantity" Type="Edm.Decimal" Precision="13" Scale="3" />
+                <Property Name="UnitPrice" Type="Edm.Decimal" Precision="15" Scale="2" />
+                <Property Name="TaxRate" Type="Edm.Decimal" Precision="5" Scale="2" />
+                <Property Name="TaxCode" Type="Edm.String" MaxLength="10" />
+                <Property Name="NetAmount" Type="Edm.Decimal" Precision="15" Scale="2" />
+                <Property Name="TaxAmount" Type="Edm.Decimal" Precision="15" Scale="2" />
+                <Property Name="GrossAmount" Type="Edm.Decimal" Precision="15" Scale="2" />
+            </EntityType>
+            <EntityType Name="TaxItem">
+                <Key>
+                    <PropertyRef Name="TaxItemId" />
+                </Key>
+                <Property Name="TaxItemId" Type="Edm.String" Nullable="false" MaxLength="20" />
+                <Property Name="InvoiceId" Type="Edm.String" Nullable="false" MaxLength="20" />
+                <Property Name="TaxRate" Type="Edm.Decimal" Precision="5" Scale="2" />
+                <Property Name="TaxBase" Type="Edm.Decimal" Precision="15" Scale="2" />
+                <Property Name="TaxAmount" Type="Edm.Decimal" Precision="15" Scale="2" />
+            </EntityType>
+            <EntityType Name="Note">
+                <Key>
+                    <PropertyRef Name="InvoiceId" />
+                </Key>
+                <Property Name="InvoiceId" Type="Edm.String" Nullable="false" MaxLength="20" />
+                <Property Name="NoteText" Type="Edm.String" MaxLength="1000" />
+            </EntityType>
+            <EntityType Name="Attachment">
+                <Key>
+                    <PropertyRef Name="AttachmentId" />
+                </Key>
+                <Property Name="AttachmentId" Type="Edm.String" Nullable="false" MaxLength="20" />
+                <Property Name="InvoiceId" Type="Edm.String" Nullable="false" MaxLength="20" />
+                <Property Name="FileName" Type="Edm.String" MaxLength="255" />
+                <Property Name="FileType" Type="Edm.String" MaxLength="50" />
+                <Property Name="FileSize" Type="Edm.Int32" />
+                <Property Name="MimeType" Type="Edm.String" MaxLength="100" />
+            </EntityType>
+            <Association Name="Invoice_InvoiceItems">
+                <End Type="com.bagemini.invoice.Invoice" Multiplicity="1" Role="FromRole_Invoice" />
+                <End Type="com.bagemini.invoice.InvoiceItem" Multiplicity="*" Role="ToRole_InvoiceItem" />
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Invoice">
+                        <PropertyRef Name="InvoiceId" />
+                    </Principal>
+                    <Dependent Role="ToRole_InvoiceItem">
+                        <PropertyRef Name="InvoiceId" />
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Invoice_TaxItems">
+                <End Type="com.bagemini.invoice.Invoice" Multiplicity="1" Role="FromRole_Invoice" />
+                <End Type="com.bagemini.invoice.TaxItem" Multiplicity="*" Role="ToRole_TaxItem" />
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Invoice">
+                        <PropertyRef Name="InvoiceId" />
+                    </Principal>
+                    <Dependent Role="ToRole_TaxItem">
+                        <PropertyRef Name="InvoiceId" />
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Invoice_Notes">
+                <End Type="com.bagemini.invoice.Invoice" Multiplicity="1" Role="FromRole_Invoice" />
+                <End Type="com.bagemini.invoice.Note" Multiplicity="0..1" Role="ToRole_Note" />
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Invoice">
+                        <PropertyRef Name="InvoiceId" />
+                    </Principal>
+                    <Dependent Role="ToRole_Note">
+                        <PropertyRef Name="InvoiceId" />
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Invoice_Attachments">
+                <End Type="com.bagemini.invoice.Invoice" Multiplicity="1" Role="FromRole_Invoice" />
+                <End Type="com.bagemini.invoice.Attachment" Multiplicity="*" Role="ToRole_Attachment" />
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Invoice">
+                        <PropertyRef Name="InvoiceId" />
+                    </Principal>
+                    <Dependent Role="ToRole_Attachment">
+                        <PropertyRef Name="InvoiceId" />
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="InvoiceEntities" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="Invoices" EntityType="com.bagemini.invoice.Invoice" />
+                <EntitySet Name="InvoiceItems" EntityType="com.bagemini.invoice.InvoiceItem" />
+                <EntitySet Name="TaxItems" EntityType="com.bagemini.invoice.TaxItem" />
+                <EntitySet Name="Notes" EntityType="com.bagemini.invoice.Note" />
+                <EntitySet Name="Attachments" EntityType="com.bagemini.invoice.Attachment" />
+                <AssociationSet Name="Invoice_InvoiceItems_Set" Association="com.bagemini.invoice.Invoice_InvoiceItems">
+                    <End EntitySet="Invoices" Role="FromRole_Invoice" />
+                    <End EntitySet="InvoiceItems" Role="ToRole_InvoiceItem" />
+                </AssociationSet>
+                <AssociationSet Name="Invoice_TaxItems_Set" Association="com.bagemini.invoice.Invoice_TaxItems">
+                    <End EntitySet="Invoices" Role="FromRole_Invoice" />
+                    <End EntitySet="TaxItems" Role="ToRole_TaxItem" />
+                </AssociationSet>
+                <AssociationSet Name="Invoice_Notes_Set" Association="com.bagemini.invoice.Invoice_Notes">
+                    <End EntitySet="Invoices" Role="FromRole_Invoice" />
+                    <End EntitySet="Notes" Role="ToRole_Note" />
+                </AssociationSet>
+                <AssociationSet Name="Invoice_Attachments_Set" Association="com.bagemini.invoice.Invoice_Attachments">
+                    <End EntitySet="Invoices" Role="FromRole_Invoice" />
+                    <End EntitySet="Attachments" Role="ToRole_Attachment" />
+                </AssociationSet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

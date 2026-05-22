@@ -1,0 +1,72 @@
+[
+  {
+    "TaxItemId": "TAX-1",
+    "InvoiceId": "INV-001",
+    "TaxRate": 19,
+    "TaxBase": "1296.67",
+    "TaxAmount": "246.37"
+  },
+  {
+    "TaxItemId": "TAX-2",
+    "InvoiceId": "INV-002",
+    "TaxRate": 19,
+    "TaxBase": "390.34",
+    "TaxAmount": "74.16"
+  },
+  {
+    "TaxItemId": "TAX-3",
+    "InvoiceId": "INV-003",
+    "TaxRate": 19,
+    "TaxBase": "1590.66",
+    "TaxAmount": "302.23"
+  },
+  {
+    "TaxItemId": "TAX-4",
+    "InvoiceId": "INV-004",
+    "TaxRate": 19,
+    "TaxBase": "614.09",
+    "TaxAmount": "116.68"
+  },
+  {
+    "TaxItemId": "TAX-5",
+    "InvoiceId": "INV-005",
+    "TaxRate": 19,
+    "TaxBase": "432.31",
+    "TaxAmount": "82.14"
+  },
+  {
+    "TaxItemId": "TAX-6",
+    "InvoiceId": "INV-006",
+    "TaxRate": 19,
+    "TaxBase": "72.81",
+    "TaxAmount": "13.83"
+  },
+  {
+    "TaxItemId": "TAX-7",
+    "InvoiceId": "INV-007",
+    "TaxRate": 19,
+    "TaxBase": "450.70",
+    "TaxAmount": "85.63"
+  },
+  {
+    "TaxItemId": "TAX-8",
+    "InvoiceId": "INV-008",
+    "TaxRate": 19,
+    "TaxBase": "1043.67",
+    "TaxAmount": "198.30"
+  },
+  {
+    "TaxItemId": "TAX-9",
+    "InvoiceId": "INV-009",
+    "TaxRate": 19,
+    "TaxBase": "654.15",
+    "TaxAmount": "124.29"
+  },
+  {
+    "TaxItemId": "TAX-10",
+    "InvoiceId": "INV-010",
+    "TaxRate": 19,
+    "TaxBase": "61.58",
+    "TaxAmount": "11.70"
+  }
+]
