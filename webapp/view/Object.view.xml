@@ -83,6 +83,57 @@
                 </uxap:subSections>
             </uxap:ObjectPageSection>
             
+            <uxap:ObjectPageSection title="{i18n>sectionItems}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <Table id="invoiceItemsTable" items="{
+                                path: 'InvoiceItems',
+                                templateShareable: true
+                            }">
+                                <headerToolbar>
+                                    <Toolbar>
+                                        <Title text="{i18n>sectionItems}" level="H2"/>
+                                        <ToolbarSpacer/>
+                                        <Button text="{i18n>btnAddItem}" press=".onAddItem" visible="{objectView>/editMode}"/>
+                                    </Toolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column><Text text="{i18n>columnDescription}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>columnQuantity}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>columnUnitPrice}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>columnTaxRate}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>columnNetAmount}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <VBox>
+                                                <Input value="{Description}" editable="{objectView>/editMode}" visible="{objectView>/editMode}"/>
+                                                <Text text="{Description}" visible="{= !${objectView>/editMode} }"/>
+                                            </VBox>
+                                            <VBox>
+                                                <Input value="{ path: 'Quantity', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 3, maxFractionDigits: 3 } }" change=".onItemChange" editable="{objectView>/editMode}" visible="{objectView>/editMode}"/>
+                                                <Text text="{ path: 'Quantity', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 3, maxFractionDigits: 3 } }" visible="{= !${objectView>/editMode} }"/>
+                                            </VBox>
+                                            <VBox>
+                                                <Input value="{ path: 'UnitPrice', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" change=".onItemChange" editable="{objectView>/editMode}" visible="{objectView>/editMode}"/>
+                                                <Text text="{ path: 'UnitPrice', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" visible="{= !${objectView>/editMode} }"/>
+                                            </VBox>
+                                            <VBox>
+                                                <Input value="{ path: 'TaxRate', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" change=".onItemChange" editable="{objectView>/editMode}" visible="{objectView>/editMode}"/>
+                                                <Text text="{ path: 'TaxRate', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" visible="{= !${objectView>/editMode} }"/>
+                                            </VBox>
+                                            <Text text="{ path: 'NetAmount', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            
             <uxap:ObjectPageSection title="{i18n>sectionAmounts}">
                 <uxap:subSections>
                     <uxap:ObjectPageSubSection>

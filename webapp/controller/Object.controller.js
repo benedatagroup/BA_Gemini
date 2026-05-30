@@ -54,6 +54,80 @@ sap.ui.define([
             this.getView().getModel("objectView").setProperty("/editMode", false);
         },
 
+        onAddItem: function () {
+            var oView = this.getView();
+            var oContext = oView.getBindingContext();
+            var sInvoiceId = oContext.getProperty("InvoiceId");
+            
+            var sItemId = "ITEM_" + new Date().getTime();
+
+            var oNewItemData = {
+                ItemId: sItemId,
+                InvoiceId: sInvoiceId,
+                Description: "",
+                Quantity: "1.000",
+                UnitPrice: "0.00",
+                TaxRate: "19.00",
+                TaxCode: "V1",
+                NetAmount: "0.00",
+                TaxAmount: "0.00",
+                GrossAmount: "0.00"
+            };
+
+            var oTable = oView.byId("invoiceItemsTable");
+            var oBinding = oTable.getBinding("items");
+            
+            // Add the new row directly to the table binding at the end
+            oBinding.create(oNewItemData, true);
+            
+            this._recalculateTotals();
+        },
+
+        onItemChange: function (oEvent) {
+            var oItemContext = oEvent.getSource().getBindingContext();
+            var oModel = oItemContext.getModel();
+            
+            var fQuantity = parseFloat(oItemContext.getProperty("Quantity") || 0);
+            var fUnitPrice = parseFloat(oItemContext.getProperty("UnitPrice") || 0);
+            var fTaxRate = parseFloat(oItemContext.getProperty("TaxRate") || 0);
+            
+            var fNetAmount = fQuantity * fUnitPrice;
+            var fTaxAmount = fNetAmount * (fTaxRate / 100);
+            var fGrossAmount = fNetAmount + fTaxAmount;
+            
+            oModel.setProperty("NetAmount", fNetAmount.toFixed(2), oItemContext);
+            oModel.setProperty("TaxAmount", fTaxAmount.toFixed(2), oItemContext);
+            oModel.setProperty("GrossAmount", fGrossAmount.toFixed(2), oItemContext);
+            
+            this._recalculateTotals();
+        },
+
+        _recalculateTotals: function () {
+            var oView = this.getView();
+            var oContext = oView.getBindingContext();
+            var oModel = oContext.getModel();
+            
+            var oTable = oView.byId("invoiceItemsTable");
+            var oBinding = oTable.getBinding("items");
+            
+            if (!oBinding) {
+                return;
+            }
+
+            var aContexts = oBinding.getContexts();
+            
+            var fTotalNet = 0;
+            var fTotalGross = 0;
+
+            aContexts.forEach(function (oItemContext) {
+                fTotalNet += parseFloat(oItemContext.getProperty("NetAmount") || 0);
+                fTotalGross += parseFloat(oItemContext.getProperty("GrossAmount") || 0);
+            });
+            
+            oModel.setProperty("NetAmount", fTotalNet.toFixed(2), oContext);
+            oModel.setProperty("GrossAmount", fTotalGross.toFixed(2), oContext);
+        },
+
         onSave: function () {
             var oView = this.getView();
             var oContext = oView.getBindingContext();
