@@ -87,10 +87,13 @@
                 <uxap:subSections>
                     <uxap:ObjectPageSubSection>
                         <uxap:blocks>
-                            <Table id="invoiceItemsTable" items="{
-                                path: 'InvoiceItems',
-                                templateShareable: true
-                            }">
+                            <Table id="invoiceItemsTable" 
+                                items="{
+                                    path: 'InvoiceItems',
+                                    templateShareable: true
+                                }"
+                                mode="{= ${objectView>/editMode} ? 'Delete' : 'None' }"
+                                delete=".onDeleteItem">
                                 <headerToolbar>
                                     <Toolbar>
                                         <Title text="{i18n>sectionItems}" level="H2"/>
@@ -125,6 +128,39 @@
                                                 <Text text="{ path: 'TaxRate', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" visible="{= !${objectView>/editMode} }"/>
                                             </VBox>
                                             <Text text="{ path: 'NetAmount', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            
+            <uxap:ObjectPageSection title="{i18n>sectionTaxItems}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <Table id="taxItemsTable" items="{
+                                path: 'TaxItems',
+                                templateShareable: true
+                            }">
+                                <headerToolbar>
+                                    <Toolbar>
+                                        <Title text="{i18n>sectionTaxItems}" level="H2"/>
+                                    </Toolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column hAlign="End"><Text text="{i18n>columnTaxRate}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>columnTaxBase}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>columnTaxAmount}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{ path: 'TaxRate', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } } %" />
+                                            <Text text="{ path: 'TaxBase', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" />
+                                            <Text text="{ path: 'TaxAmount', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" />
                                         </cells>
                                     </ColumnListItem>
                                 </items>
