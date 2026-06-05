@@ -9,7 +9,10 @@ sap.ui.define([
     return Controller.extend("bagemini.controller.Object", {
         onInit() {
             var oViewModel = new JSONModel({
-                editMode: false
+                editMode: false,
+                noteText: "",
+                originalNoteText: "",
+                noteExists: false
             });
             this.getView().setModel(oViewModel, "objectView");
 
@@ -18,9 +21,29 @@ sap.ui.define([
         },
 
         _onObjectMatched: function (oEvent) {
-            this.getView().getModel("objectView").setProperty("/editMode", false);
+            var oViewModel = this.getView().getModel("objectView");
+            oViewModel.setProperty("/editMode", false);
+            oViewModel.setProperty("/noteText", "");
+            oViewModel.setProperty("/originalNoteText", "");
+            oViewModel.setProperty("/noteExists", false);
             
             var sInvoiceId = oEvent.getParameter("arguments").InvoiceId;
+            var oModel = this.getOwnerComponent().getModel();
+            
+            var sNotePath = "/Notes('" + sInvoiceId + "')";
+            oModel.read(sNotePath, {
+                success: function(oData) {
+                    oViewModel.setProperty("/noteText", oData.NoteText);
+                    oViewModel.setProperty("/originalNoteText", oData.NoteText);
+                    oViewModel.setProperty("/noteExists", true);
+                },
+                error: function() {
+                    oViewModel.setProperty("/noteText", "");
+                    oViewModel.setProperty("/originalNoteText", "");
+                    oViewModel.setProperty("/noteExists", false);
+                }
+            });
+
             this.getView().bindElement({
                 path: "/Invoices('" + sInvoiceId + "')",
                 events: {
@@ -64,8 +87,10 @@ sap.ui.define([
         },
 
         onCancel: function () {
+            var oViewModel = this.getView().getModel("objectView");
             this.getView().getModel().resetChanges();
-            this.getView().getModel("objectView").setProperty("/editMode", false);
+            oViewModel.setProperty("/noteText", oViewModel.getProperty("/originalNoteText"));
+            oViewModel.setProperty("/editMode", false);
         },
 
         onAddItem: function () {
@@ -280,17 +305,41 @@ sap.ui.define([
             }
 
             var oModel = oView.getModel();
+            var oViewModel = oView.getModel("objectView");
+            var sNoteText = oViewModel.getProperty("/noteText");
+            var sOriginalNoteText = oViewModel.getProperty("/originalNoteText");
+            var bNoteExists = oViewModel.getProperty("/noteExists");
+            var sInvoiceId = oData.InvoiceId;
+
+            if (sNoteText !== sOriginalNoteText) {
+                if (bNoteExists) {
+                    oModel.setProperty("/Notes('" + sInvoiceId + "')/NoteText", sNoteText);
+                } else if (sNoteText && sNoteText.trim() !== "") {
+                    oModel.createEntry("Notes", {
+                        context: oContext,
+                        properties: {
+                            InvoiceId: sInvoiceId,
+                            NoteText: sNoteText
+                        }
+                    });
+                }
+            }
+
             if (oModel.hasPendingChanges()) {
                 oModel.submitChanges({
                     success: function () {
-                        oView.getModel("objectView").setProperty("/editMode", false);
+                        oViewModel.setProperty("/originalNoteText", sNoteText);
+                        if (sNoteText && sNoteText.trim() !== "") {
+                            oViewModel.setProperty("/noteExists", true);
+                        }
+                        oViewModel.setProperty("/editMode", false);
                     },
                     error: function () {
                         MessageBox.error("Fehler beim Speichern der Daten.");
                     }
                 });
             } else {
-                oView.getModel("objectView").setProperty("/editMode", false);
+                oViewModel.setProperty("/editMode", false);
             }
         }
     });
