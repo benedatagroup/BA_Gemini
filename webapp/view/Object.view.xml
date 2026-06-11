@@ -6,6 +6,7 @@
     xmlns:uxap="sap.uxap"
     xmlns:layout="sap.ui.layout"
     xmlns:form="sap.ui.layout.form"
+    xmlns:upload="sap.m.upload"
     displayBlock="true">
     <uxap:ObjectPageLayout id="objectPageId" showTitleInHeaderContent="true" showFooter="true">
         <uxap:headerTitle>
@@ -199,6 +200,36 @@
                                     width="100%" 
                                     rows="5"/>
                             </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <uxap:ObjectPageSection title="{i18n>sectionAttachments}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <upload:UploadSet id="uploadSet"
+                                items="{
+                                    path: 'Attachments',
+                                    templateShareable: true
+                                }"
+                                uploadEnabled="{objectView>/editMode}"
+                                instantUpload="true"
+                                uploadUrl="/mock/upload"
+                                afterItemAdded=".onAfterItemAdded">
+                                <upload:items>
+                                    <upload:UploadSetItem
+                                        fileName="{FileName}"
+                                        mediaType="{MimeType}"
+                                        visibleEdit="false"
+                                        visibleRemove="false">
+                                        <upload:attributes>
+                                            <ObjectAttribute title="Dateityp" text="{FileType}" />
+                                        </upload:attributes>
+                                    </upload:UploadSetItem>
+                                </upload:items>
+                            </upload:UploadSet>
                         </uxap:blocks>
                     </uxap:ObjectPageSubSection>
                 </uxap:subSections>

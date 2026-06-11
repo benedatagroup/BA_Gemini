@@ -241,7 +241,7 @@ sap.ui.define([
                                     }
                                 });
                             } catch(e) {
-                                console.error("Error creating TaxItem:", e);
+                                MessageBox.error("Fehler beim Erstellen der Steuerposition: " + e.message);
                             }
                         }
                     });
@@ -272,11 +272,50 @@ sap.ui.define([
                 oModel.remove(sPath, {
                     success: function() {
                         // Binding change will trigger dataReceived which recalculates totals
-                    }.bind(this),
+                    },
                     error: function() {
                         MessageBox.error("Fehler beim Löschen der Position.");
                     }
                 });
+            }
+        },
+
+        onAfterItemAdded: function (oEvent) {
+            var oItem = oEvent.getParameter("item");
+            var oView = this.getView();
+            var oContext = oView.getBindingContext();
+            var oModel = oContext.getModel();
+            var sInvoiceId = oContext.getProperty("InvoiceId");
+            
+            var sAttachmentId = "ATT_" + new Date().getTime();
+            
+            var sFileName = oItem.getFileName();
+            var sMediaType = oItem.getMediaType() || "application/octet-stream";
+            var sFileType = "UNKNOWN";
+            if (sFileName) {
+                var aParts = sFileName.split(".");
+                if (aParts.length > 1) {
+                    sFileType = aParts[aParts.length - 1].toUpperCase();
+                }
+            }
+            
+
+            var oNewAttachmentData = {
+                AttachmentId: sAttachmentId,
+                InvoiceId: sInvoiceId,
+                FileName: sFileName,
+                FileType: sFileType,
+                FileSize: oItem.getFileObject() ? oItem.getFileObject().size : 0,
+                MimeType: sMediaType
+            };
+
+            try {
+                oModel.createEntry("Attachments", {
+                    context: oContext,
+                    properties: oNewAttachmentData
+                });
+            } catch (e) {
+                MessageBox.error("Fehler beim Hinzufügen des Anhangs: " + e.message);
             }
         },
 
