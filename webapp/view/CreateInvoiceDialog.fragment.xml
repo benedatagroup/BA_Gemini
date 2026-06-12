@@ -1,0 +1,31 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog id="createInvoiceDialog" title="{i18n>dialogCreateTitle}">
+        <content>
+            <f:SimpleForm editable="true" layout="ResponsiveGridLayout">
+                <f:content>
+                    <Label text="{i18n>fieldInvoiceNumber}" required="true" />
+                    <Input id="newInvoiceNumber" />
+                    
+                    <Label text="{i18n>fieldVendorName}" required="true" />
+                    <Input id="newVendorName" />
+                    
+                    <Label text="{i18n>fieldInvoiceDate}" required="true" />
+                    <DatePicker id="newInvoiceDate" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" />
+                    
+                    <Label text="{i18n>fieldCurrency}" required="true" />
+                    <Input id="newCurrency" maxLength="5" />
+                    
+                    <Label text="{i18n>fieldDueDate}" />
+                    <DatePicker id="newDueDate" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" />
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        <buttons>
+            <Button text="{i18n>btnSave}" type="Emphasized" press=".onCreateInvoiceSave" />
+            <Button text="{i18n>btnCancel}" press=".onCreateInvoiceCancel" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -69,6 +69,13 @@
                         descending: true
                     }
                 }">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{i18n>title}" level="H2"/>
+                        <ToolbarSpacer/>
+                        <Button text="{i18n>btnCreate}" type="Emphasized" press=".onCreateInvoicePress"/>
+                    </OverflowToolbar>
+                </headerToolbar>
                 <columns>
                     <Column>
                         <Text text="{i18n>columnInvoiceNumber}" />
