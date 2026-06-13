@@ -319,6 +319,35 @@ sap.ui.define([
             }
         },
 
+        onPost: function () {
+            var oView = this.getView();
+            var oContext = oView.getBindingContext();
+            var oData = oContext.getObject();
+            var oResourceBundle = oView.getModel("i18n").getResourceBundle();
+            
+            // Validation
+            if (!oData.VendorName || oData.VendorName.trim() === "") {
+                MessageBox.error(oResourceBundle.getText("errorVendorNameEmpty"));
+                return;
+            }
+            if (!oData.Currency || oData.Currency.trim() === "") {
+                MessageBox.error(oResourceBundle.getText("errorCurrencyEmpty"));
+                return;
+            }
+            if (oData.DueDate) {
+                var oToday = new Date();
+                oToday.setHours(0, 0, 0, 0);
+                if (oData.DueDate.getTime() < oToday.getTime()) {
+                    MessageBox.error(oResourceBundle.getText("errorDueDatePast"));
+                    return;
+                }
+            }
+
+            var oModel = oContext.getModel();
+            oModel.setProperty("Status", "Posted", oContext);
+            this.onSave();
+        },
+
         onSave: function () {
             var oView = this.getView();
             var oContext = oView.getBindingContext();

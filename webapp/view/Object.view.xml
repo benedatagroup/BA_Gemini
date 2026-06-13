@@ -28,6 +28,7 @@
                 </uxap:navigationActions>
                 <uxap:actions>
                     <Button text="{i18n>btnEdit}" type="Emphasized" press=".onEdit" visible="{= !${objectView>/editMode} }"/>
+                    <Button text="{i18n>btnPost}" type="Accept" press=".onPost" visible="{= ${objectView>/editMode} &amp;&amp; ${Status} === 'Draft' }"/>
                     <Button text="{i18n>btnSave}" type="Emphasized" press=".onSave" visible="{objectView>/editMode}"/>
                     <Button text="{i18n>btnCancel}" press=".onCancel" visible="{objectView>/editMode}"/>
                 </uxap:actions>
