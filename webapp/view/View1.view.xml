@@ -5,6 +5,9 @@
     xmlns:f="sap.f"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
     displayBlock="true">
     
     <f:DynamicPage id="dynamicPageId" headerExpanded="true" toggleHeaderOnTitleClick="true">
@@ -59,16 +62,34 @@
         </f:header>
         
         <f:content>
-            <Table
-                id="invoiceTable"
-                inset="false"
-                items="{
-                    path: '/Invoices',
-                    sorter: {
-                        path: 'InvoiceDate',
-                        descending: true
-                    }
-                }">
+            <VBox>
+                <viz:VizFrame id="invoiceVizFrame" uiConfig="{applicationSet:'fiori'}" vizType="column" height="300px" width="100%">
+                    <viz:dataset>
+                        <viz.data:FlattenedDataset data="{chartModel>/Data}">
+                            <viz.data:dimensions>
+                                <viz.data:DimensionDefinition name="Month" value="{chartModel>Month}" />
+                            </viz.data:dimensions>
+                            <viz.data:measures>
+                                <viz.data:MeasureDefinition name="Count" value="{chartModel>Count}" />
+                            </viz.data:measures>
+                        </viz.data:FlattenedDataset>
+                    </viz:dataset>
+                    <viz:feeds>
+                        <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count" />
+                        <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month" />
+                    </viz:feeds>
+                </viz:VizFrame>
+                <Table
+                    id="invoiceTable"
+                    inset="false"
+                    updateFinished=".onTableUpdateFinished"
+                    items="{
+                        path: '/Invoices',
+                        sorter: {
+                            path: 'InvoiceDate',
+                            descending: true
+                        }
+                    }">
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title text="{i18n>title}" level="H2"/>
@@ -122,6 +143,7 @@
                     </ColumnListItem>
                 </items>
             </Table>
+            </VBox>
         </f:content>
     </f:DynamicPage>
 </mvc:View>

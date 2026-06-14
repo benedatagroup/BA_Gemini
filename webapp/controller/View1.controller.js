@@ -4,12 +4,49 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/ui/core/Fragment",
     "sap/m/MessageBox",
-    "sap/m/MessageToast"
-], (Controller, Filter, FilterOperator, Fragment, MessageBox, MessageToast) => {
+    "sap/m/MessageToast",
+    "sap/ui/model/json/JSONModel"
+], (Controller, Filter, FilterOperator, Fragment, MessageBox, MessageToast, JSONModel) => {
     "use strict";
 
     return Controller.extend("bagemini.controller.View1", {
-        onInit() {
+        onInit: function () {
+            var oChartModel = new JSONModel({ Data: [] });
+            this.getView().setModel(oChartModel, "chartModel");
+        },
+
+        onTableUpdateFinished: function (oEvent) {
+            this._updateChartData();
+        },
+
+        _updateChartData: function () {
+            var oTable = this.byId("invoiceTable");
+            var oBinding = oTable.getBinding("items");
+            if (!oBinding) {
+                return;
+            }
+
+            var aContexts = oBinding.getCurrentContexts();
+            var oCounts = {};
+
+            aContexts.forEach(function (oContext) {
+                var oInvoice = oContext.getObject();
+                if (oInvoice && oInvoice.InvoiceDate) {
+                    var oDate = new Date(oInvoice.InvoiceDate);
+                    var sMonth = oDate.getFullYear() + "-" + ("0" + (oDate.getMonth() + 1)).slice(-2);
+                    oCounts[sMonth] = (oCounts[sMonth] || 0) + 1;
+                }
+            });
+
+            var aData = Object.keys(oCounts).map(function (sMonth) {
+                return { Month: sMonth, Count: oCounts[sMonth] };
+            });
+
+            aData.sort(function(a, b) {
+                return a.Month.localeCompare(b.Month);
+            });
+
+            this.getView().getModel("chartModel").setProperty("/Data", aData);
         },
 
         onCreateInvoicePress: function () {
