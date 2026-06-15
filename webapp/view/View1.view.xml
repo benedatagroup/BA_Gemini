@@ -4,6 +4,8 @@
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
     xmlns:core="sap.ui.core"
     xmlns:viz="sap.viz.ui5.controls"
     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
@@ -21,43 +23,7 @@
         
         <f:header>
             <f:DynamicPageHeader pinnable="true">
-                <fb:FilterBar id="filterBar" clear="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
-                    <fb:filterGroupItems>
-                        <!-- Basic Search Box as Filter Item to keep it in the Filter Bar natively -->
-                        <fb:FilterGroupItem groupName="G1" name="Search" label="{i18n>searchLabel}" visibleInFilterBar="true">
-                            <fb:control>
-                                <SearchField id="searchField" placeholder="{i18n>searchPlaceholder}" search="onSearch" />
-                            </fb:control>
-                        </fb:FilterGroupItem>
-                        
-                        <fb:FilterGroupItem groupName="G1" name="Status" label="{i18n>columnStatus}" visibleInFilterBar="true">
-                            <fb:control>
-                                <Select id="statusFilter" selectedKey="All">
-                                    <core:Item key="All" text="{i18n>statusAll}" />
-                                    <core:Item key="Draft" text="{i18n>statusDraft}" />
-                                    <core:Item key="Posted" text="{i18n>statusPosted}" />
-                                </Select>
-                            </fb:control>
-                        </fb:FilterGroupItem>
-
-                        <!-- Weitere Filterfelder -->
-                        <fb:FilterGroupItem groupName="G1" name="Date" label="{i18n>filterDate}" visibleInFilterBar="true">
-                            <fb:control>
-                                <DateRangeSelection id="dateFilter" />
-                            </fb:control>
-                        </fb:FilterGroupItem>
-                        
-                        <fb:FilterGroupItem groupName="G1" name="Currency" label="{i18n>filterCurrency}" visibleInFilterBar="true">
-                            <fb:control>
-                                <ComboBox id="currencyFilter">
-                                    <core:Item key="EUR" text="EUR" />
-                                    <core:Item key="USD" text="USD" />
-                                    <core:Item key="CHF" text="CHF" />
-                                </ComboBox>
-                            </fb:control>
-                        </fb:FilterGroupItem>
-                    </fb:filterGroupItems>
-                </fb:FilterBar>
+                <smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="Invoices" persistencyKey="SmartFilterPKey" enableBasicSearch="true"/>
             </f:DynamicPageHeader>
         </f:header>
         
@@ -79,70 +45,30 @@
                         <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month" />
                     </viz:feeds>
                 </viz:VizFrame>
-                <Table
-                    id="invoiceTable"
-                    inset="false"
-                    updateFinished=".onTableUpdateFinished"
-                    items="{
-                        path: '/Invoices',
-                        sorter: {
-                            path: 'InvoiceDate',
-                            descending: true
-                        }
-                    }">
-                <headerToolbar>
-                    <OverflowToolbar>
-                        <Title text="{i18n>title}" level="H2"/>
-                        <ToolbarSpacer/>
-                        <Button text="{i18n>btnCreate}" type="Emphasized" press=".onCreateInvoicePress"/>
-                    </OverflowToolbar>
-                </headerToolbar>
-                <columns>
-                    <Column>
-                        <Text text="{i18n>columnInvoiceNumber}" />
-                    </Column>
-                    <Column>
-                        <Text text="{i18n>columnVendor}" />
-                    </Column>
-                    <Column hAlign="End">
-                        <Text text="{i18n>columnInvoiceDate}" />
-                    </Column>
-                    <Column hAlign="End">
-                        <Text text="{i18n>columnGrossAmount}" />
-                    </Column>
-                    <Column>
-                        <Text text="{i18n>columnStatus}" />
-                    </Column>
-                </columns>
-                <items>
-                    <ColumnListItem type="Navigation" press=".onListItemPress">
-                        <cells>
-                            <ObjectIdentifier title="{InvoiceNumber}" text="{InvoiceId}"/>
-                            <Text text="{VendorName}" />
-                            <Text text="{
-                                path: 'InvoiceDate',
-                                type: 'sap.ui.model.type.Date',
-                                formatOptions: {
-                                    style: 'medium'
-                                }
-                            }" />
-                            <ObjectNumber
-                                number="{
-                                    path: 'GrossAmount',
-                                    type: 'sap.ui.model.type.Float',
-                                    formatOptions: {
-                                        minFractionDigits: 2,
-                                        maxFractionDigits: 2
-                                    }
-                                }"
-                                unit="{Currency}" />
-                            <ObjectStatus
-                                text="{= ${Status} === 'Draft' ? ${i18n>statusDraft} : ${i18n>statusPosted} }"
-                                state="{= ${Status} === 'Draft' ? 'Error' : 'Success' }" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+                <smartTable:SmartTable
+                    id="invoiceSmartTable"
+                    entitySet="Invoices"
+                    smartFilterId="smartFilterBar"
+                    tableType="Table"
+                    useExportToExcel="false"
+                    useVariantManagement="false"
+                    useTablePersonalisation="true"
+                    header="{i18n>title}"
+                    showRowCount="true"
+                    enableAutoBinding="true"
+                    noData="Keine Daten"
+                    initiallyVisibleFields="InvoiceNumber,VendorName,InvoiceDate,GrossAmount,Status"
+                    requestAtLeastFields="InvoiceId"
+                    class="sapUiResponsiveContentPadding">
+                    <smartTable:customToolbar>
+                        <OverflowToolbar>
+                            <ToolbarSpacer/>
+                            <Button text="{i18n>btnCreate}" type="Emphasized" press=".onCreateInvoicePress"/>
+                        </OverflowToolbar>
+                    </smartTable:customToolbar>
+                    <Table id="invoiceTable" updateFinished=".onTableUpdateFinished" mode="SingleSelectMaster" selectionChange=".onListItemPress">
+                    </Table>
+                </smartTable:SmartTable>
             </VBox>
         </f:content>
     </f:DynamicPage>

@@ -158,63 +158,29 @@ sap.ui.define([
             this.byId("createInvoiceDialog").close();
         },
 
-        onSearch: function () {
-            var aFilters = [];
-            
-            // Basic Search
-            var sQuery = this.byId("searchField").getValue();
-            if (sQuery && sQuery.length > 0) {
-                var oFilter1 = new Filter("InvoiceNumber", FilterOperator.Contains, sQuery);
-                var oFilter2 = new Filter("VendorName", FilterOperator.Contains, sQuery);
-                var oCombinedFilter = new Filter({
-                    filters: [oFilter1, oFilter2],
-                    and: false
-                });
-                aFilters.push(oCombinedFilter);
-            }
-
-            // Status Filter
-            var sStatus = this.byId("statusFilter").getSelectedKey();
-            if (sStatus && sStatus !== "All") {
-                aFilters.push(new Filter("Status", FilterOperator.EQ, sStatus));
-            }
-
-            // Date Range Filter
-            var oDateRange = this.byId("dateFilter");
-            var dDateValue = oDateRange.getDateValue();
-            var dSecondDateValue = oDateRange.getSecondDateValue();
-            if (dDateValue && dSecondDateValue) {
-                aFilters.push(new Filter("InvoiceDate", FilterOperator.BT, dDateValue, dSecondDateValue));
-            } else if (dDateValue) {
-                aFilters.push(new Filter("InvoiceDate", FilterOperator.EQ, dDateValue));
-            }
-
-            // Currency Filter
-            var sCurrency = this.byId("currencyFilter").getSelectedKey();
-            if (sCurrency) {
-                aFilters.push(new Filter("Currency", FilterOperator.EQ, sCurrency));
-            }
-
-            // update list binding
-            var oTable = this.byId("invoiceTable");
-            var oBinding = oTable.getBinding("items");
-            oBinding.filter(aFilters, "Application");
-        },
-
-        onReset: function () {
-            this.byId("searchField").setValue("");
-            this.byId("statusFilter").setSelectedKey("All");
-            this.byId("dateFilter").setValue("");
-            this.byId("currencyFilter").setSelectedKey("");
-            
-            // trigger search again to clear filters
-            this.onSearch();
-        },
-
         onListItemPress: function (oEvent) {
-            var oItem = oEvent.getSource();
+            var bSelected = oEvent.getParameter("selected");
+            // Skip processing if the event was triggered by an item being unselected
+            if (bSelected === false) {
+                return;
+            }
+            
+            var oItem = oEvent.getParameter("listItem") || oEvent.getSource();
             var oContext = oItem.getBindingContext();
+            if (!oContext) {
+                return;
+            }
+            
             var sInvoiceId = oContext.getProperty("InvoiceId");
+            if (!sInvoiceId) {
+                sap.m.MessageBox.error("Fehler: InvoiceId konnte nicht aus dem Kontext gelesen werden.");
+                return;
+            }
+            
+            var oTable = this.byId("invoiceTable");
+            if (oTable) {
+                oTable.removeSelections(true);
+            }
             
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("RouteObject", {
