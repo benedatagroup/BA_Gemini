@@ -177,10 +177,11 @@ sap.ui.define([
                 return;
             }
             
-            var oTable = this.byId("invoiceTable");
-            if (oTable) {
-                oTable.removeSelections(true);
-            }
+            // Selection removed to keep item highlighted in Master-Detail FCL
+            // var oTable = this.byId("invoiceTable");
+            // if (oTable) {
+            //     oTable.removeSelections(true);
+            // }
             
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("RouteObject", {

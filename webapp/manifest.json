@@ -92,9 +92,8 @@
     },
     "routing": {
       "config": {
-        "routerClass": "sap.m.routing.Router",
-        "controlAggregation": "pages",
-        "controlId": "app",
+        "routerClass": "sap.f.routing.Router",
+        "controlId": "fcl",
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
@@ -114,6 +113,7 @@
           "name": "RouteObject",
           "pattern": "Invoice/{InvoiceId}",
           "target": [
+            "TargetView1",
             "TargetObject"
           ]
         }
@@ -121,11 +121,13 @@
       "targets": {
         "TargetView1": {
           "id": "View1",
-          "name": "View1"
+          "name": "View1",
+          "controlAggregation": "beginColumnPages"
         },
         "TargetObject": {
           "id": "Object",
-          "name": "Object"
+          "name": "Object",
+          "controlAggregation": "midColumnPages"
         }
       }
     },

@@ -24,7 +24,7 @@
                     <Text text="{VendorName}"/>
                 </uxap:snappedContent>
                 <uxap:navigationActions>
-                    <Button icon="sap-icon://nav-back" type="Transparent" press=".onNavBack" tooltip="{i18n>backButton}"/>
+                    <Button icon="sap-icon://decline" type="Transparent" press=".onClose" tooltip="{i18n>closeButton}"/>
                 </uxap:navigationActions>
                 <uxap:actions>
                     <Button text="{i18n>btnEdit}" type="Emphasized" press=".onEdit" visible="{= !${objectView>/editMode} }"/>

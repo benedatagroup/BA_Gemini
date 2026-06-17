@@ -63,23 +63,14 @@ sap.ui.define([
             this._recalculateTotals();
         },
 
-        onNavBack: function () {
+        onClose: function () {
             if (this.getView().getModel("objectView").getProperty("/editMode")) {
                 this.getView().getModel().resetChanges();
                 this.getView().getModel("objectView").setProperty("/editMode", false);
             }
 
-            var oHistory = History.getInstance();
-            var sPreviousHash = oHistory.getPreviousHash();
-
-            // Falls wir aus der App navigiert sind -> einen Schritt zurück
-            if (sPreviousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                // Fallback: Manuell zur Listenansicht navigieren, wenn App direkt über Bookmark aufgerufen wurde
-                var oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo("RouteView1", {}, true);
-            }
+            var oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("RouteView1", {}, true); // Return to list view
         },
 
         onEdit: function () {
